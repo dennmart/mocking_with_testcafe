@@ -13,6 +13,7 @@ class HomePageModel {
     this.convertButton = Selector("#convert_btn");
 
     this.conversionResponse = Selector(".conversion-response");
+    this.errorResponse = Selector(".error-message");
   }
 }
 

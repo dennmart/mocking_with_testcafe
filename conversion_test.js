@@ -16,6 +16,12 @@ const conversionMock = RequestMock()
     { "Access-Control-Allow-Origin": "http://localhost:3000" }
   );
 
+const errorMock = RequestMock()
+  .onRequestTo("http://localhost:3001/exchange_rates/convert")
+  .respond("", 422, {
+    "Access-Control-Allow-Origin": "http://localhost:3000"
+  });
+
 test.requestHooks(conversionMock)(
   "User can convert between two currencies",
   async t => {
@@ -31,5 +37,23 @@ test.requestHooks(conversionMock)(
     await t
       .expect(homePageModel.conversionResponse.innerText)
       .eql("100 Euro is about 11910.35 Japanese Yen");
+  }
+);
+
+test.requestHooks(errorMock)(
+  "User sees an error message if the API request has a non-success response",
+  async t => {
+    await t
+      .typeText(homePageModel.baseAmountInput, "100")
+      .click(homePageModel.fromCurrencySelect)
+      .click(homePageModel.fromCurrencyOptions.withText("Euro"))
+      .click(homePageModel.toCurrencySelect)
+      .click(homePageModel.toCurrencyOptions.withText("Japanese Yen"))
+      .click(homePageModel.convertButton);
+
+    await t.expect(homePageModel.errorResponse.exists).ok();
+    await t
+      .expect(homePageModel.errorResponse.innerText)
+      .eql("There was an error performing the conversion. Please try again.");
   }
 );
