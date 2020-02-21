@@ -1,10 +1,10 @@
 import { RequestMock } from "testcafe";
 import homePageModel from "./page_models/home_page_model";
 
-fixture("Cash Conversion App").page("http://localhost:3000/");
+fixture("Cash Conversion App").page("https://cash-conversion.dev-tester.com/");
 
 const conversionMock = RequestMock()
-  .onRequestTo("http://localhost:3001/exchange_rates/convert")
+  .onRequestTo("https://cash-conversion-api.dev-tester.com/exchange_rates/convert")
   .respond(
     {
       baseAmount: "100",
@@ -13,13 +13,13 @@ const conversionMock = RequestMock()
       toCurrency: "Japanese Yen"
     },
     200,
-    { "Access-Control-Allow-Origin": "http://localhost:3000" }
+    { "Access-Control-Allow-Origin": "https://cash-conversion.dev-tester.com" }
   );
 
 const errorMock = RequestMock()
-  .onRequestTo("http://localhost:3001/exchange_rates/convert")
+  .onRequestTo("https://cash-conversion-api.dev-tester.com/exchange_rates/convert")
   .respond("", 422, {
-    "Access-Control-Allow-Origin": "http://localhost:3000"
+    "Access-Control-Allow-Origin": "https://cash-conversion.dev-tester.com"
   });
 
 test.requestHooks(conversionMock)(
