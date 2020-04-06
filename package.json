@@ -5,7 +5,7 @@
   "author": "Dennis Martinez",
   "license": "MIT",
   "dependencies": {
-    "testcafe": "^1.8.2"
+    "testcafe": "^1.8.3"
   },
   "repository": {
     "type": "git",
